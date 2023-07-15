@@ -9,6 +9,7 @@ import EatScreen from './screens/EatScreen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+// import RiderScreen from './screens/RiderScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,10 +30,11 @@ export default function App() {
   statusBarStyle:'dark'
 }}/>
 <Stack.Screen name='EatsScreen' component={EatScreen} options={{
-  headerShown:false,
+  // headerShown:false,
   statusBarColor:'white',
   statusBarStyle:'dark'
 }}/>
+
         </Stack.Navigator>
         {/* <HomeScreen /> */}
       </SafeAreaProvider>

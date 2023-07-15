@@ -2,20 +2,22 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useRef } from 'react'
 import MapView,{Marker} from 'react-native-maps';
 import tw from 'twrnc'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectDestination, selectOrigin } from '../slices/navigationSlice';
 import MapViewDirections from 'react-native-maps-directions';
 import {GOOGLE_MAPS_APIKEY} from '@env';
+import { setTravelTimeInformation } from '../slices/navigationSlice';
+import { Icon } from '@rneui/themed';
 
 const Map = () => {
 
     const origin=useSelector(selectOrigin)
     const destination=useSelector(selectDestination)
     const mapRef=useRef(null) 
+    const dispatch=useDispatch()
 
-    useEffect(()=>{
-      if(!origin||!destination)return;
-
+    useEffect(() => {
+      if(!origin||!destination) return;
       mapRef.current.fitToSuppliedMarkers(['origin','destination'],{
         edgePadding:{
           top:50,
@@ -24,8 +26,21 @@ const Map = () => {
           left:50
         }
       })
-
     },[origin,destination])
+
+    useEffect(()=>{
+      if(!origin||!destination) return;
+      const getTravelTime=async()=>{
+        fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin.description}&destinations=${destination.description}&key=${GOOGLE_MAPS_APIKEY}`)
+        .then(res=>res.json())
+        .then(data=>{
+          // console.log(data)
+          dispatch(setTravelTimeInformation(data.rows[0].elements[0]))
+        })
+      }
+      getTravelTime()
+
+    },[origin,destination,GOOGLE_MAPS_APIKEY])
 
   return (
     
@@ -42,12 +57,12 @@ const Map = () => {
 >
 
   {
-    origin&&destination&&(
+    origin && destination &&(
 <MapViewDirections
 origin={origin.description}
 destination={destination.description}
 apikey={GOOGLE_MAPS_APIKEY}
-strokeWidth={3}
+strokeWidth={5}
 strokeColor='black'
 />
     )
@@ -70,7 +85,7 @@ strokeColor='black'
       longitude: destination.location.lng,
     }}
     title='Destination'
-    description={origin.description}
+    description={destination.description}
     identifier='destination'
     />
   )}

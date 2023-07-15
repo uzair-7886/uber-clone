@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { setOrigin,setDestination } from '../slices/navigationSlice';
 import { useSelector } from 'react-redux';
 import { selectOrigin } from '../slices/navigationSlice';
+import NavFavorites from '../components/NavFavorites';
 
 const HomeScreen = () => {
 const dispatch=useDispatch()
@@ -50,9 +51,7 @@ dispatch(setDestination(null))
         },
         textInput:{
           fontSize:18,
-          // backgroundColor:'gray',
           borderRadius:10,
-          // color:'white'
         }
       }}
 debounce={200}
@@ -64,6 +63,7 @@ query={{
 }}
 />
       <NavOpt/>
+      <NavFavorites/>
     </SafeAreaView>
   )
 }
