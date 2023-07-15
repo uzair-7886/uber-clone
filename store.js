@@ -3,6 +3,6 @@ import  navigationSlice  from './slices/navigationSlice'
 
 export const store = configureStore({
     reducer: {
-        nav: navigationSlice,
+        navigation: navigationSlice,
     },
   })

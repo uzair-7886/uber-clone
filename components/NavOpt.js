@@ -5,6 +5,8 @@ import { Icon } from '@rneui/themed';
 // import {ArrowRightOutlined } from '@ant-design/icons'
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { selectOrigin } from '../slices/navigationSlice';
 
 
 const data=[
@@ -25,6 +27,7 @@ const data=[
 const NavOpt = () => {
 
     const navigation=useNavigation()
+    const origin=useSelector(selectOrigin)
 
 return(
     <FlatList
@@ -38,8 +41,9 @@ return(
     {
         elevation:1
     }]}
+    disabled={!origin}
         >
-            <View>
+            <View style={tw`${!origin && 'opacity-20'}`}>
                 <Image
                 style={{
                     width:120,
